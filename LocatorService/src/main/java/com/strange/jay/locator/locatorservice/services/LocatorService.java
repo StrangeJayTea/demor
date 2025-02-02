@@ -2,8 +2,6 @@ package com.strange.jay.locator.locatorservice.services;
 
 import com.strange.jay.locator.locatorservice.domain.Camera;
 import java.util.Collection;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 public interface LocatorService {
 

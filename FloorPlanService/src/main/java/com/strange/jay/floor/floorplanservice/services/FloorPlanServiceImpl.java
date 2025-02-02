@@ -2,11 +2,9 @@ package com.strange.jay.floor.floorplanservice.services;
 
 import com.strange.jay.floor.floorplanservice.domain.FloorPlan;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import org.springframework.stereotype.Service;
 
 /**
