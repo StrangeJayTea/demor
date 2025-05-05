@@ -8,7 +8,7 @@ import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
-//@Component
+//@Repository
 public class CameraJpaServiceImpl implements CameraDbService  {
 
     /** An EntityManager to use for communicating with the database. */
@@ -17,8 +17,10 @@ public class CameraJpaServiceImpl implements CameraDbService  {
 
 
     @Override
-    public List<CameraEntity> getCameraEntitiesByFloorId(int floorPlanId) {
-        return List.of();
+    public List<CameraEntity> getCameraEntitiesByFloorId(final int floorId) {
+        return this.em.createQuery("FROM CameraEntity e WHERE e.floorId = :floorId", CameraEntity.class)
+            .setParameter("floorId", floorId)
+            .getResultList();
     }
 }
 
