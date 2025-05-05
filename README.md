@@ -11,8 +11,8 @@ Consists of three services:
 
 ## To Run
 The Locator Service currently has two Spring Profiles:
-'rest' -- to call the Camera Service and Floor Plan Service to get information
-'db'   -- to run by itself and rely on an internal database for information
+- 'rest' -- to call the Camera Service and Floor Plan Service to get information
+- 'db'   -- to run by itself and rely on an internal database for information
 
 ### Option 1
  - run each service separately
