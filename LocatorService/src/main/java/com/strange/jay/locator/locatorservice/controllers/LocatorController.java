@@ -1,7 +1,7 @@
 package com.strange.jay.locator.locatorservice.controllers;
 
 import com.strange.jay.locator.locatorservice.domain.Camera;
-import com.strange.jay.locator.locatorservice.services.LocatorService;
+import com.strange.jay.locator.locatorservice.services.locator.LocatorService;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LocatorController {
 
-    private static final Logger log = LoggerFactory.getLogger(LocatorController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocatorController.class);
 
     /** Service to locate those Cameras that are closest to the referenced Camera. */
     private final LocatorService locatorService;
@@ -36,7 +36,7 @@ public class LocatorController {
         @PathVariable("floor") int floorId,
         @RequestParam("referenceCameraId") int referenceCameraId,
         @RequestParam("count") int count) {
-        log.info("Finding the {} closest camera to camera {} on floor {}.", count, referenceCameraId, floorId);
-        return locatorService.getClosestCameras(floorId, referenceCameraId, count);
+        LOGGER.info("Finding the {} closest camera to camera {} on floor {}.", count, referenceCameraId, floorId);
+        return this.locatorService.getClosestCameras(floorId, referenceCameraId, count);
     }
 }
