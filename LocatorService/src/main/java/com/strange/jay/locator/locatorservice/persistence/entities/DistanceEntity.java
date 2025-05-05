@@ -31,23 +31,26 @@ public class DistanceEntity {
     @Override
     public String toString() {
         return "DistanceEntity{" +
-            "id=" + id +
-            ", camera1=" + camera1 +
-            ", camera2=" + camera2 +
-            ", distance=" + distance +
+            "id=" + this.id +
+            ", camera1=" + this.camera1 +
+            ", camera2=" + this.camera2 +
+            ", distance=" + this.distance +
             '}';
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DistanceEntity that = (DistanceEntity) o;
-        return camera1 == that.camera1 && camera2 == that.camera2 && Double.compare(distance, that.distance) == 0 && Objects.equals(id, that.id);
+        final DistanceEntity that = (DistanceEntity) o;
+        return this.camera1 == that.camera1
+            && this.camera2 == that.camera2
+            && Double.compare(this.distance, that.distance) == 0
+            && Objects.equals(this.id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, camera1, camera2, distance);
+        return Objects.hash(this.id, this.camera1, this.camera2, this.distance);
     }
 }
