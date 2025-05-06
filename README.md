@@ -10,9 +10,10 @@ Consists of three services:
 | Locator Service    | Tells us which cameras are closest to a reference camera.|
 
 ## To Run
-The Locator Service currently has two Spring Profiles:
-- 'rest' -- to call the Camera Service and Floor Plan Service to get information
-- 'db'   -- to run by itself and rely on an internal database for information
+The Locator Service currently has three Spring Profiles:
+- 'rest'   -- to call the Camera Service and Floor Plan Service to get information
+- 'db'     -- to run by itself and rely on an internal database for information (using Spring Data)
+- 'db-jpa' -- to run by itself, call the database using old-fashioned JPA
 
 ### Option 1
  - run each service separately
