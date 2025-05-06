@@ -22,7 +22,7 @@ The Locator Service currently has three Spring Profiles:
 
 ### Option 2
  - only run the Locator Service
- - make sure the Locator Service has its Spring Profile set to 'db'
+ - make sure the Locator Service has its Spring Profile set to 'db' or 'db-jpa'
  - the Locator Service uses data cached in the database
  
 ### REST URLs
