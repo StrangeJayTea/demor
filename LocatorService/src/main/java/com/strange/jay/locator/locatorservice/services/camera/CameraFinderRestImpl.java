@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
  * Version of the service that makes a REST call to the CameraService.
  */
 @Service
-@Profile("rest")
+@Profile({"rest", "default"})
 class CameraFinderRestImpl implements CameraFinder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CameraFinderRestImpl.class);

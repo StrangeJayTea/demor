@@ -6,7 +6,6 @@ import com.strange.jay.locator.locatorservice.sorting.DistanceCalculator;
 import com.strange.jay.locator.locatorservice.domain.Camera;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -42,15 +41,19 @@ class LocatorServiceImpl implements LocatorService {
     }
 
     @Override
-    public Collection<Camera> getClosestCameras(final int floorId, final int referenceCameraId, final int count) {
+    public Optional<List<Camera>> getClosestCameras(
+        final int floorId,
+        final int referenceCameraId,
+        final int count) {
+
         final Collection<Camera> foundCameras = this.cameraFinder.getCamerasForFloor(floorId);
         final Optional<Camera> referenceCamera = extractReferenceCamera(foundCameras, referenceCameraId);
 
         return referenceCamera
-             .map(cameraRef -> sortAndLimit(cameraRef, foundCameras, count))
+             .map(cameraRef -> Optional.of(sortAndLimit(cameraRef, foundCameras, count)))
              .orElseGet(() ->{
-                 log.warn("Reference camera {} not found", referenceCamera);
-                 return Collections.emptyList();
+                 log.warn("Reference camera {} not found", referenceCameraId);
+                 return Optional.empty();
         });
     }
 

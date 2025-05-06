@@ -38,7 +38,7 @@ public class CameraServiceImpl implements CameraService {
     }
 
     @Override
-    public Camera getById(int id) {
+    public Camera getById(final int id) {
         return this.cameraMap.computeIfAbsent(id, k-> createNewCamera(id));
     }
 
@@ -48,10 +48,10 @@ public class CameraServiceImpl implements CameraService {
      * @return The new camera item.
      */
     private Camera createNewCamera(final int cameraId) {
-        if (++counter > 5) {
-            counter = 0;
+        if (++this.counter > 5) {
+            this.counter = 0;
         }
-        return new Camera(cameraId, 2 * counter, 3 * counter);
+        return new Camera(cameraId, 2 * this.counter, 3 * this.counter);
     }
 
     private void populateMap() {
@@ -78,7 +78,7 @@ public class CameraServiceImpl implements CameraService {
          *
          * @param cameras The Camera items read from the properties file.
          */
-        void setCameras(Collection<Camera> cameras) {
+        void setCameras(final Collection<Camera> cameras) {
             this.cameras = cameras;
         }
 

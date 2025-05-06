@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
 import java.util.Objects;
 
 /**
@@ -23,15 +25,21 @@ public class CameraEntity {
     private Long id;
 
     /** Unique ID for the camera, exposed throughout the system. */
+    @Positive
+    @Max(value=5000, message="Camera ID must be > 0 and < 5000")
     private int cameraId;
 
     /** Unique ID for the floor plan that houses this camera. */
+    @Positive
+    @Max(value=200, message="Floor ID must be > 0 and < 300")
     private int floorId;
 
     /** The x-distance offset in feet from the southwest corner of the floor. */
+    @Positive
     private double xFeet;
 
     /** The y-distance offset in feet from the southwest corner of the floor. **/
+    @Positive
     private double yFeet;
 
     public void setId(final Long id) {

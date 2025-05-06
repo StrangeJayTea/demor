@@ -3,6 +3,7 @@ package com.strange.jay.locator.locatorservice.controllers;
 import com.strange.jay.locator.locatorservice.domain.Camera;
 import com.strange.jay.locator.locatorservice.services.locator.LocatorService;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,8 @@ public class LocatorController {
         @RequestParam("referenceCameraId") int referenceCameraId,
         @RequestParam("count") int count) {
         LOGGER.info("Finding the {} closest camera to camera {} on floor {}.", count, referenceCameraId, floorId);
-        return this.locatorService.getClosestCameras(floorId, referenceCameraId, count);
+
+        return this.locatorService.getClosestCameras(floorId, referenceCameraId, count)
+            .orElseThrow(NoSuchElementException::new);
     }
 }

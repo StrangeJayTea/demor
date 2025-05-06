@@ -2,6 +2,8 @@ package com.strange.jay.camera.controllers;
 
 import com.strange.jay.camera.domain.Camera;
 import com.strange.jay.camera.services.CameraService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +45,8 @@ public class CameraController {
      * @return The found Camera item.
      */
     @GetMapping("/cameras/{id}")
-    Camera getById(@PathVariable int id) {
+    Camera getById(@Positive @Max(value=5000, message="Camera ID must be > 0 and < 5000")
+                   @PathVariable final int id) {
         log.info("In getById {}", id);
         return this.cameraService.getById(id);
     }

@@ -1,4 +1,4 @@
-package com.strange.jay.locator.locatorservice.controllers;
+package com.strange.jay.camera.controllers;
 
 import java.nio.file.AccessDeniedException;
 import java.util.NoSuchElementException;
@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 /** Log if a REST calls encounters an issue. */
 @ControllerAdvice
@@ -36,6 +37,13 @@ public class RestExceptionHandler {
         return new ResponseEntity<Object>(
             "The requested floor plan or reference camera ID were not found. Please verify the input parameters.",
             new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<Object> handleValidationException(final HandlerMethodValidationException ex, final WebRequest request) {
+        final var userFriendlyMsg = ex.getAllErrors().getFirst().getDefaultMessage();
+        LOGGER.info("Validation exception: {}", userFriendlyMsg);
+        return ResponseEntity.badRequest().body(userFriendlyMsg);
     }
 
 }
