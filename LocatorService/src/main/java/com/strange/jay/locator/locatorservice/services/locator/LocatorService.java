@@ -3,6 +3,7 @@ package com.strange.jay.locator.locatorservice.services.locator;
 import com.strange.jay.locator.locatorservice.domain.Camera;
 import java.util.Collection;
 
+/** Service to locate nearby cameras. */
 public interface LocatorService {
 
     /**

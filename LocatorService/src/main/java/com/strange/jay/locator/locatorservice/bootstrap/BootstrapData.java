@@ -1,74 +1,86 @@
 package com.strange.jay.locator.locatorservice.bootstrap;
 
 import com.strange.jay.locator.locatorservice.persistence.entities.CameraEntity;
+import com.strange.jay.locator.locatorservice.persistence.jpa.CameraJpaServiceImpl;
 import com.strange.jay.locator.locatorservice.persistence.repository.CameraRepository;
-import jakarta.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+/**
+ * Called when we use the database to save an initial set of fake Camera data.
+ */
 @Component
-@Profile("db")
+@Profile({"db", "db-jpa"})
 public class BootstrapData implements CommandLineRunner {
 
-    private final CameraRepository cameraRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BootstrapData.class);
+
+    /** Component that reads fake Camera data from a config file. */
     private final CameraPropertiesReader cameraPropertiesReader;
 
-    public BootstrapData(final CameraRepository cameraRepository, final CameraPropertiesReader cameraPropertiesReader) {
-        this.cameraRepository = cameraRepository;
+    /** Method to call for saving the Camera data to the database. */
+    private final Consumer<Collection<CameraEntity>> cameraEntityConsumer;
+
+    /**
+     * Saves fake Camera data to the database at application start-up.
+     *
+     * @param cameraPropertiesReader Provides the fake data read from the config file.
+     * @param cameraEntityConsumer The method to call for saving data to the database.
+     */
+    public BootstrapData(
+        final CameraPropertiesReader cameraPropertiesReader,
+        final Consumer<Collection<CameraEntity>> cameraEntityConsumer) {
+
         this.cameraPropertiesReader = cameraPropertiesReader;
+        this.cameraEntityConsumer = cameraEntityConsumer;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("IN the 'db' profile!");
-        this.cameraRepository.saveAll(this.cameraPropertiesReader.getCameras());
+        LOGGER.info("Saving data...");
+        this.cameraEntityConsumer.accept(this.cameraPropertiesReader.getCameras());
     }
 
-    /**
-     * Static inner class to read fake data from application.properties using the "app.fake" prefix.
-     */
+
+    /** Configuration class to determine which consumer to call to save the data. */
     @Configuration
-    @PropertySource("classpath:camera.properties")
-    @ConfigurationProperties(prefix = "app.fake")
-    public static class CameraPropertiesReader {
+    static class CameraConsumer {
+        private final ApplicationContext applicationContext;
 
-        private static final Logger LOGGER = LoggerFactory.getLogger(CameraPropertiesReader.class);
-
-        private Collection<CameraEntity> cameras;
-
-        CameraPropertiesReader() {
-            this.cameras = new ArrayList<>();
+        CameraConsumer(final ApplicationContext applicationContext) {
+            this.applicationContext = applicationContext;
         }
 
         /**
-         * Used by Spring to set the values read from the applications.properties file.
+         * Creates a consumer for saving data using Spring Data.
          *
-         * @param cameras The Camera items read from the properties file.
+         * @return The method to call for saving data via Spring Data.
          */
-        void setCameras(final Collection<CameraEntity> cameras) {
-            this.cameras = cameras;
+        @Bean
+        @Profile("db")
+        Consumer<Collection<CameraEntity>> cameraSpingDataConsumer() {
+            final var springDataRepository = this.applicationContext.getBean(CameraRepository.class);
+            return springDataRepository::saveAll;
         }
 
         /**
-         * Provides the Camera items read from the properties file.
+         * Creates a consumer for saving data using traditional JPA.
          *
-         * @return A non-null Collection of Camera items to use.
+         * @return The method to call to save data to the database using JPA.
          */
-        Collection<CameraEntity> getCameras() {
-            return this.cameras;
-        }
-
-        @PostConstruct
-        public void init() {
-            LOGGER.info("Read {} cameras", cameras.size());
+        @Bean
+        @Profile("db-jpa")
+        Consumer<Collection<CameraEntity>> cameraJpaConsumer() {
+            final var jpaService = this.applicationContext.getBean(CameraJpaServiceImpl.class);
+            return jpaService::saveAll;
         }
     }
 }

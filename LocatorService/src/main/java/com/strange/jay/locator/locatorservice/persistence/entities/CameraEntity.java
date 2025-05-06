@@ -1,7 +1,5 @@
 package com.strange.jay.locator.locatorservice.persistence.entities;
 
-
-import com.strange.jay.locator.locatorservice.domain.Camera;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -111,14 +111,6 @@ class CameraFinderRestImpl implements CameraFinder {
     private Camera getCamera(final int cameraId) {
         final String cameraUrl = String.format(this.cameraUrlFormat, cameraId);
         LOGGER.info("Getting the cameras for cameraId {} using URL {}", cameraId, cameraUrl);
-
-        try {
-            // Just to make it fun
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
         final Camera result = this.restTemplate.getForObject(cameraUrl, Camera.class);
         LOGGER.info("Got a Camera: {}", result);
         return result;

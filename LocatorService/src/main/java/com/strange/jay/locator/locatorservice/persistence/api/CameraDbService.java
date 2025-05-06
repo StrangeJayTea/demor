@@ -1,9 +1,7 @@
 package com.strange.jay.locator.locatorservice.persistence.api;
 
 import com.strange.jay.locator.locatorservice.persistence.entities.CameraEntity;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public interface CameraDbService {
 

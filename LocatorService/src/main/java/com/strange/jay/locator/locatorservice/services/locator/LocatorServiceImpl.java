@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Version of the service that does not use a database.
+ * Finds the 'n' closest cameras to a reference camera.s
  */
 @Service
 class LocatorServiceImpl implements LocatorService {
