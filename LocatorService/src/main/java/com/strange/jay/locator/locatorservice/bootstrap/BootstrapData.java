@@ -47,6 +47,7 @@ public class BootstrapData implements CommandLineRunner {
     public void run(String... args) throws Exception {
         LOGGER.info("Saving data...");
         this.cameraEntityConsumer.accept(this.cameraPropertiesReader.getCameras());
+        LOGGER.info("Save Complete");
     }
 
 
